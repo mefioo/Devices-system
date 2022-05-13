@@ -1,0 +1,73 @@
+.btn,
+.outline-dark {
+	background-color: white;
+	border: 2px solid black;
+	border-radius: 0;
+	margin: 10px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.outline-dark:hover {
+	color: red;
+}
+
+.list-group {
+	border-radius: 0;
+}
+
+.list-group-item {
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 0;
+	margin: 10px;
+}
+
+.list-group-item + .list-group-item {
+	border-top-width: 1px;
+}
+
+.form-control {
+	border-radius: 0;
+	border: 1px solid black;
+}
+
+.form-check {
+	margin: 0;
+}
+
+form div {
+	margin-bottom: 20px;
+	margin: 0 auto;
+	margin-bottom: 20px;
+	width: 80%;
+}
+
+.card-header {
+	background-color: white;
+	border: none;
+}
+
+.modal-header {
+	background-color: white;
+	border: none;
+	width: 80%;
+	margin: 10px auto;
+}
+
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	width: 95%;
+	margin: auto;
+	margin-top: 20px;
+}
+
+.flex-row-end {
+	display: flex;
+	justify-content: flex-end;
+}
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
