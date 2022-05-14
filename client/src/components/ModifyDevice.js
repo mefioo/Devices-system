@@ -6,8 +6,8 @@ import ModalOverlayTitle from './UI/ModalOverlayTitle';
 import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
-import useInput from './hooks/useInput';
-import { deleteDevice, modifyDevice } from '../slices/devicesSlice';
+import useInput from '../hooks/useInput';
+import { devicesActions } from '../slices/devicesSlice';
 
 const ModifyDevice = (props) => {
 	const {
@@ -41,7 +41,7 @@ const ModifyDevice = (props) => {
 
 		if (areInputsProper) {
 			dispatch(
-				modifyDevice({
+				devicesActions.getUpdatedDevices({
 					Id: props.device.Id,
 					Name: deviceName,
 					Description: deviceDescription,
@@ -53,7 +53,7 @@ const ModifyDevice = (props) => {
 	};
 
 	const deleteItemHandler = () => {
-		dispatch(deleteDevice(props.device.Id));
+		dispatch(devicesActions.getReducedDevices(props.device.Id));
 		props.onHide();
 	};
 

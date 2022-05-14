@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, ButtonGroup, Card } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import AddDevice from './AddDevice';
-import { getDevices } from '../slices/devicesSlice';
+import { devicesActions } from '../slices/devicesSlice';
 
 const Header = () => {
 	const [isAdding, setIsAdding] = useState(false);
@@ -17,7 +17,7 @@ const Header = () => {
 	};
 
 	const refreshDevicesHandler = () => {
-		dispatch(getDevices());
+		dispatch(devicesActions.getDevices());
 	};
 
 	return (

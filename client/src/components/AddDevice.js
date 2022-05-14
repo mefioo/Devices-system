@@ -7,8 +7,8 @@ import FormGroupInput from './UI/FormGroupInput';
 import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { addDevice } from '../slices/devicesSlice';
-import useInput from './hooks/useInput';
+import { devicesActions } from '../slices/devicesSlice';
+import useInput from '../hooks/useInput';
 
 const AddDevice = (props) => {
 	const {
@@ -29,7 +29,7 @@ const AddDevice = (props) => {
 		value: deviceDisbled,
 		nameChange: changeDisabledHandler,
 		hasError: disabledError,
-	} = useInput('', () => {
+	} = useInput(false, () => {
 		return true;
 	});
 
@@ -42,7 +42,7 @@ const AddDevice = (props) => {
 
 		if (areInputsProper) {
 			dispatch(
-				addDevice({
+				devicesActions.getDiversifiedDevices({
 					Id: uuidv4(),
 					Name: deviceName,
 					Description: deviceDescription,

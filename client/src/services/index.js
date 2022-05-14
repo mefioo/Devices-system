@@ -1,14 +1,11 @@
 import axios from 'axios';
 
-export const getAllDevices = async () => {
-	const data = await fetch('/api');
-	const response = await data.json();
-	return response;
+export const getAllDevices = () => {
+	return axios.get('/api');
 };
 
-export const addNewDevice = async (newDevice) => {
-	const response = await axios.post('/api', newDevice);
-	return response;
+export const addNewDevice = (newDevice) => {
+	return axios.post('/api', newDevice);
 };
 
 export const modifyDeviceById = async (device) => {

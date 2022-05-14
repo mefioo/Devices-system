@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { Card, ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDevices, selectAllDevices } from '../slices/devicesSlice';
+import { selectAllDevices } from '../slices/devicesSlice';
 import { selectLoadingState } from '../slices/loadingSlice';
 import ListItem from './ListItem';
+import { devicesActions } from '../slices/devicesSlice';
 
 const Body = () => {
 	const dispatch = useDispatch();
@@ -12,12 +13,12 @@ const Body = () => {
 	const isLoading = useSelector((state) => selectLoadingState(state));
 
 	useEffect(() => {
-		dispatch(getDevices());
+		dispatch(devicesActions.getDevices());
 	}, [dispatch]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			dispatch(getDevices());
+			dispatch(devicesActions.getAllDevices());
 		}, 30000);
 		return () => {
 			clearInterval(interval);
