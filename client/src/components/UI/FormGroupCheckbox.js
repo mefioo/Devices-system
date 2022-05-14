@@ -16,4 +16,9 @@ const FormGroupCheckbox = (props) => {
 	);
 };
 
+FormGroupCheckbox.defaultProps = {
+	checked: false,
+	onChange: () => {},
+};
+
 export default FormGroupCheckbox;

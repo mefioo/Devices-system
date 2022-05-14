@@ -9,7 +9,7 @@ const ListItem = (props) => {
 
 	const device = useSelector((state) => selectDeviceById(state, props.id));
 
-	console.log('device');
+	// console.log('device');
 
 	const showModifyHandler = () => {
 		setIsModifing(true);

@@ -29,6 +29,19 @@ let data = [
 	},
 ];
 
+const validateAddedDevice = (data) => {
+	if (typeof data.Name !== 'string' || data.Name.length === 0) {
+		return false;
+	}
+	if (typeof data.Description !== 'string') {
+		return false;
+	}
+	if (typeof data.Disabled !== 'boolean') {
+		return false;
+	}
+	return true;
+};
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
@@ -48,9 +61,30 @@ app.get('/api', (req, res) => {
 	res.json({ Devices: data });
 });
 
+app.get('/api/:deviceId', (req, res) => {
+	res.json(data.find((item) => item.Id === req.params.deviceId));
+});
+
 app.post('/api', (req, res) => {
-	data.push(req.body);
-	res.status(201).json({ status: 'ok' });
+	const body = req.body;
+	const validationPassed = validateAddedDevice(body);
+	if (validationPassed) {
+		data.push(body);
+		res.status(201).json({ status: 'ok' });
+	} else {
+		res.status(403).json({ status: 'ok' });
+	}
+});
+
+app.put('/api/:deviceId', (req, res) => {
+	console.log(req.body);
+	data = data.map((item) => (item.Id === req.body.Id ? { ...req.body } : item));
+	res.status(204).json({ status: 'ok' });
+});
+
+app.delete('/api/:deviceId', (req, res) => {
+	data = data.filter((item) => item.Id !== req.params.deviceId);
+	res.status(200).json({ status: 'ok' });
 });
 
 app.listen(PORT, () => {

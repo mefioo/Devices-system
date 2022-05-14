@@ -18,7 +18,6 @@ const Body = () => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			dispatch(getDevices());
-			console.log('here');
 		}, 30000);
 		return () => {
 			clearInterval(interval);

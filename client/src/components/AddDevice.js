@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ModalOverlay from './UI/ModalOverlay';
 import { Button, Form } from 'react-bootstrap';
 import ModalOverlayTitle from './UI/ModalOverlayTitle';
@@ -8,40 +8,49 @@ import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
 import { addDevice } from '../slices/devicesSlice';
+import useInput from './hooks/useInput';
 
 const AddDevice = (props) => {
-	const [deviceName, setDeviceName] = useState('');
-	const [deviceDescription, setDeviceDescription] = useState('');
-	const [deviceDisbled, setDeviceDisabled] = useState(false);
+	const {
+		value: deviceName,
+		nameChange: changeNameHandler,
+		hasError: nameError,
+	} = useInput('', (val) => val.trim().length !== 0);
+
+	const {
+		value: deviceDescription,
+		nameChange: changeDecriptionHandler,
+		hasError: descriptionError,
+	} = useInput('', () => {
+		return true;
+	});
+
+	const {
+		value: deviceDisbled,
+		nameChange: changeDisabledHandler,
+		hasError: disabledError,
+	} = useInput('', () => {
+		return true;
+	});
 
 	const dispatch = useDispatch();
 
-	const changeNameHandler = (value) => {
-		setDeviceName(value);
-	};
-
-	const changeDecriptionHandler = (value) => {
-		setDeviceDescription(value);
-	};
-
-	const changeDisabledHandler = (value) => {
-		setDeviceDisabled(value);
-	};
-
 	const onFormSubmition = (event) => {
 		event.preventDefault();
-		if (deviceName === '') {
-			return;
-		}
 
-		dispatch(
-			addDevice({
-				Id: uuidv4(),
-				Name: deviceName,
-				Description: deviceDescription,
-				Disabled: deviceDisbled,
-			})
-		);
+		const areInputsProper = !nameError && !descriptionError && !disabledError;
+
+		if (areInputsProper) {
+			dispatch(
+				addDevice({
+					Id: uuidv4(),
+					Name: deviceName,
+					Description: deviceDescription,
+					Disabled: deviceDisbled,
+				})
+			);
+			props.onHide();
+		}
 	};
 
 	return (
@@ -54,14 +63,19 @@ const AddDevice = (props) => {
 						label={'Device name'}
 						type={'text'}
 						required={true}
+						value={deviceName}
 					/>
 					<FormGroupInput
 						onChange={changeDecriptionHandler}
 						label={'Description'}
 						type={'text'}
 						required={false}
+						value={deviceDescription}
 					/>
-					<FormGroupCheckbox onChange={changeDisabledHandler} />
+					<FormGroupCheckbox
+						checked={deviceDisbled}
+						onChange={changeDisabledHandler}
+					/>
 					<div className='flex-row-end'>
 						<Button variant='outline-dark' type='submit'>
 							create

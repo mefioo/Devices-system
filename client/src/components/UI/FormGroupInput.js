@@ -34,4 +34,13 @@ const FormGroupInput = (props) => {
 	);
 };
 
+FormGroupInput.defaultProps = {
+	label: '',
+	type: 'text',
+	disabled: false,
+	onChange: () => {},
+	value: '',
+	required: false,
+};
+
 export default FormGroupInput;

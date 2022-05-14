@@ -1,28 +1,60 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FormGroupInput from './UI/FormGroupInput';
 import ModalOverlay from './UI/ModalOverlay';
 import ModalOverlayBody from './UI/ModalOverlayBody';
 import ModalOverlayTitle from './UI/ModalOverlayTitle';
 import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { Form, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import useInput from './hooks/useInput';
+import { deleteDevice, modifyDevice } from '../slices/devicesSlice';
 
 const ModifyDevice = (props) => {
-	const [updatedName, setUpdatedName] = useState(props.device.Name);
-	const [updatedDescription, setUpdatedDescription] = useState(
-		props.device.Description
-	);
-	const [updatedDisabled, setUpdatedDisabled] = useState(props.device.Disabled);
+	const {
+		value: deviceName,
+		nameChange: changeNameHandler,
+		hasError: nameError,
+	} = useInput(props.device.Name, (val) => val.trim().length !== 0);
 
-	const modifyNameHandler = (value) => {
-		setUpdatedName(value);
+	const {
+		value: deviceDescription,
+		nameChange: changeDecriptionHandler,
+		hasError: descriptionError,
+	} = useInput(props.device.Description, () => {
+		return true;
+	});
+
+	const {
+		value: deviceDisbled,
+		nameChange: changeDisabledHandler,
+		hasError: disabledError,
+	} = useInput(props.device.Disabled, () => {
+		return true;
+	});
+
+	const dispatch = useDispatch();
+
+	const modifyItemHandler = (event) => {
+		event.preventDefault();
+
+		const areInputsProper = !nameError && !descriptionError && !disabledError;
+
+		if (areInputsProper) {
+			dispatch(
+				modifyDevice({
+					Id: props.device.Id,
+					Name: deviceName,
+					Description: deviceDescription,
+					Disabled: deviceDisbled,
+				})
+			);
+			props.onHide();
+		}
 	};
 
-	const modifyDescriptionHandler = (value) => {
-		setUpdatedDescription(value);
-	};
-
-	const changeDisabledHandler = (value) => {
-		setUpdatedDisabled(value);
+	const deleteItemHandler = () => {
+		dispatch(deleteDevice(props.device.Id));
+		props.onHide();
 	};
 
 	return (
@@ -40,26 +72,33 @@ const ModifyDevice = (props) => {
 					<FormGroupInput
 						label={'Device name'}
 						type={'text'}
-						onChange={modifyNameHandler}
-						value={updatedName}
+						onChange={changeNameHandler}
+						value={deviceName}
 						required={true}
 					/>
 					<FormGroupInput
 						label={'Description'}
 						type={'text'}
-						onChange={modifyDescriptionHandler}
-						value={updatedDescription}
-						required={true}
+						onChange={changeDecriptionHandler}
+						value={deviceDescription}
 					/>
 					<FormGroupCheckbox
-						checked={updatedDisabled}
+						checked={deviceDisbled}
 						onChange={changeDisabledHandler}
 					/>
 					<div className='flex-row-end'>
-						<Button variant='outline-dark' type='submit'>
+						<Button
+							variant='outline-dark'
+							type='submit'
+							onClick={modifyItemHandler}
+						>
 							modify
 						</Button>
-						<Button variant='outline-dark' type='button'>
+						<Button
+							variant='outline-dark'
+							type='button'
+							onClick={deleteItemHandler}
+						>
 							delete
 						</Button>
 						<Button variant='outline-dark' type='button' onClick={props.onHide}>

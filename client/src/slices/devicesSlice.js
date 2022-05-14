@@ -1,7 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { loadingActions } from './loadingSlice';
-import { createSelector } from 'reselect';
-import axios from 'axios';
+import {
+	createSelector,
+	createSelectorCreator,
+	defaultMemoize,
+} from 'reselect';
+import {
+	addNewDevice,
+	deleteDeviceById,
+	getAllDevices,
+	modifyDeviceById,
+} from '../components/services';
+import { isEqual } from 'lodash';
 
 const initialState = { items: [] };
 
@@ -25,8 +35,7 @@ export const getDevices = () => {
 	return async (dispatch) => {
 		dispatch(loadingActions.setLoading());
 		try {
-			const data = await fetch('/api');
-			const response = await data.json();
+			const response = await getAllDevices();
 
 			dispatch(devicesActions.setDevices({ items: response.Devices }));
 			dispatch(loadingActions.setNotLoading());
@@ -40,7 +49,7 @@ export const getDevices = () => {
 export const addDevice = (newDevice) => {
 	return async () => {
 		try {
-			const response = await axios.post('/api', newDevice);
+			const response = await addNewDevice(newDevice);
 			if (response.data.status !== 'ok') {
 				throw new Error('Error while posting data');
 			}
@@ -50,7 +59,31 @@ export const addDevice = (newDevice) => {
 	};
 };
 
-export const selectAllDevices = createSelector(
+export const modifyDevice = (device) => {
+	return async () => {
+		try {
+			const response = await modifyDeviceById(device);
+			console.log(response.status);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+export const deleteDevice = (id) => {
+	return async () => {
+		try {
+			const response = await deleteDeviceById(id);
+			console.log(response);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+};
+
+const createDeepEqualSelector = createSelectorCreator(defaultMemoize, isEqual);
+
+export const selectAllDevices = createDeepEqualSelector(
 	[(state) => state.devices.items],
 	(items) => items.map((item) => item)
 );

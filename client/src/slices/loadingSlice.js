@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
 
 const loadingSlice = createSlice({
 	name: 'loading',
@@ -13,7 +14,10 @@ const loadingSlice = createSlice({
 	},
 });
 
-export const selectLoadingState = (state) => state.loading.isLoading;
+export const selectLoadingState = createSelector(
+	[(state) => state.loading.isLoading],
+	(isLoading) => isLoading
+);
 
 export default loadingSlice;
 export const loadingActions = loadingSlice.actions;
