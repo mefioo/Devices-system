@@ -44,5 +44,10 @@
 			"last 1 safari version"
 		]
 	},
-	"proxy": "http://localhost:3001"
+	"proxy": "http://localhost:3001",
+	"devDependencies": {
+		"babel-jest": "^28.1.0",
+		"jest": "^28.1.0",
+		"regenerator-runtime": "^0.13.9"
+	}
 }

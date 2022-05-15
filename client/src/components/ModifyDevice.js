@@ -7,7 +7,7 @@ import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import useInput from '../hooks/useInput';
-import { devicesActions } from '../slices/devicesSlice';
+import { GET_REDUCED_DEVICES, GET_UPDATED_DEVICES } from '../constants';
 
 const ModifyDevice = (props) => {
 	const {
@@ -40,20 +40,21 @@ const ModifyDevice = (props) => {
 		const areInputsProper = !nameError && !descriptionError && !disabledError;
 
 		if (areInputsProper) {
-			dispatch(
-				devicesActions.getUpdatedDevices({
+			dispatch({
+				type: GET_UPDATED_DEVICES,
+				payload: {
 					Id: props.device.Id,
 					Name: deviceName,
 					Description: deviceDescription,
 					Disabled: deviceDisbled,
-				})
-			);
+				},
+			});
 			props.onHide();
 		}
 	};
 
 	const deleteItemHandler = () => {
-		dispatch(devicesActions.getReducedDevices(props.device.Id));
+		dispatch({ type: GET_REDUCED_DEVICES, payload: props.device.Id });
 		props.onHide();
 	};
 
@@ -109,6 +110,16 @@ const ModifyDevice = (props) => {
 			</ModalOverlayBody>
 		</ModalOverlay>
 	);
+};
+
+ModifyDevice.defaultProps = {
+	onHide: () => {},
+	device: {
+		Id: '',
+		Name: '',
+		Description: '',
+		Disabled: false,
+	},
 };
 
 export default ModifyDevice;

@@ -6,6 +6,7 @@ import {
 	modifyDeviceById,
 } from '../../services';
 import { devicesActions } from '../../slices/devicesSlice';
+import { errorActions } from '../../slices/errorSlice';
 import { loadingActions } from '../../slices/loadingSlice';
 
 export function* handleGetDevices() {
@@ -16,19 +17,28 @@ export function* handleGetDevices() {
 		yield put(devicesActions.setDevices({ items: data.Devices }));
 		yield put(loadingActions.setNotLoading());
 	} catch (error) {
-		console.log(error);
+		yield put(
+			errorActions.setError({
+				errorData: 'Error while getting data. Could not fullfill the request.',
+			})
+		);
+		yield put(loadingActions.setNotLoading());
 	}
 }
 
-export function* handleAddDevices(data) {
+export function* handleAddDevices(dataToAdd) {
 	try {
 		yield put(loadingActions.setLoading());
-		const response = yield call(addNewDevice, data.payload);
-		const newDevice = response.data;
-		yield put(devicesActions.addDevice({ item: newDevice }));
+		yield call(addNewDevice, dataToAdd.payload);
+		yield put(devicesActions.addDevice({ item: dataToAdd.payload }));
 		yield put(loadingActions.setNotLoading());
 	} catch (error) {
-		console.log(error);
+		yield put(
+			errorActions.setError({
+				errorData: 'Error while adding data. Could not fullfill the request.',
+			})
+		);
+		yield put(loadingActions.setNotLoading());
 	}
 }
 
@@ -40,7 +50,12 @@ export function* handleRemoveDevice(data) {
 		yield put(devicesActions.removeDevice({ id }));
 		yield put(loadingActions.setNotLoading());
 	} catch (error) {
-		console.log(error);
+		yield put(
+			errorActions.setError({
+				errorData: 'Error while removing data. Could not fullfill the request.',
+			})
+		);
+		yield put(loadingActions.setNotLoading());
 	}
 }
 
@@ -51,6 +66,11 @@ export function* handleModifyData(data) {
 		yield put(devicesActions.updateDevice({ device: data.payload }));
 		yield put(loadingActions.setNotLoading());
 	} catch (error) {
-		console.log(error);
+		yield put(
+			errorActions.setError({
+				errorData: 'Error while modifing data. Could not fullfill the request.',
+			})
+		);
+		yield put(loadingActions.setNotLoading());
 	}
 }

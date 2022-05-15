@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAllDevices } from '../slices/devicesSlice';
 import { selectLoadingState } from '../slices/loadingSlice';
 import ListItem from './ListItem';
-import { devicesActions } from '../slices/devicesSlice';
+import { GET_DEVICES } from '../constants';
 
 const Body = () => {
 	const dispatch = useDispatch();
@@ -13,12 +13,12 @@ const Body = () => {
 	const isLoading = useSelector((state) => selectLoadingState(state));
 
 	useEffect(() => {
-		dispatch(devicesActions.getDevices());
+		dispatch({ type: GET_DEVICES });
 	}, [dispatch]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			dispatch(devicesActions.getAllDevices());
+			dispatch({ type: GET_DEVICES });
 		}, 30000);
 		return () => {
 			clearInterval(interval);

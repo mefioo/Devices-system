@@ -12,10 +12,6 @@ const devicesSlice = createSlice({
 	name: 'devices',
 	initialState: initialState,
 	reducers: {
-		getDevices: () => {},
-		getUpdatedDevices: (device) => {},
-		getReducedDevices: (id) => {},
-		getDiversifiedDevices: (device) => {},
 		addDevice: (state, action) => {
 			state.items.push(action.payload.item);
 		},

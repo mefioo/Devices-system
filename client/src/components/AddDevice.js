@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ModalOverlay from './UI/ModalOverlay';
 import { Button, Form } from 'react-bootstrap';
 import ModalOverlayTitle from './UI/ModalOverlayTitle';
@@ -7,10 +7,12 @@ import FormGroupInput from './UI/FormGroupInput';
 import FormGroupCheckbox from './UI/FormGroupCheckbox';
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { devicesActions } from '../slices/devicesSlice';
 import useInput from '../hooks/useInput';
+import { GET_DIVERSIFIED_DEVICES } from '../constants';
 
 const AddDevice = (props) => {
+	const [emptySubmit, setEmptySubmit] = useState(false);
+
 	const {
 		value: deviceName,
 		nameChange: changeNameHandler,
@@ -41,15 +43,20 @@ const AddDevice = (props) => {
 		const areInputsProper = !nameError && !descriptionError && !disabledError;
 
 		if (areInputsProper) {
-			dispatch(
-				devicesActions.getDiversifiedDevices({
+			dispatch({
+				type: GET_DIVERSIFIED_DEVICES,
+				payload: {
 					Id: uuidv4(),
 					Name: deviceName,
 					Description: deviceDescription,
 					Disabled: deviceDisbled,
-				})
-			);
+				},
+			});
 			props.onHide();
+		} else {
+			if (nameError) {
+				setEmptySubmit(true);
+			}
 		}
 	};
 
@@ -64,6 +71,7 @@ const AddDevice = (props) => {
 						type={'text'}
 						required={true}
 						value={deviceName}
+						className={emptySubmit ? 'is-invalid' : ''}
 					/>
 					<FormGroupInput
 						onChange={changeDecriptionHandler}
@@ -88,6 +96,10 @@ const AddDevice = (props) => {
 			</ModalOverlayBody>
 		</ModalOverlay>
 	);
+};
+
+AddDevice.defaultProps = {
+	onHide: () => {},
 };
 
 export default AddDevice;

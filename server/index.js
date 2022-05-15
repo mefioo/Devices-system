@@ -70,21 +70,32 @@ app.post('/api', (req, res) => {
 	const validationPassed = validateAddedDevice(body);
 	if (validationPassed) {
 		data.push(body);
-		res.status(201).json({ status: 'ok' });
+		res.status(201).json(body);
 	} else {
-		res.status(403).json({ status: 'ok' });
+		res.status(403).json({ status: 'error' });
 	}
 });
 
 app.put('/api/:deviceId', (req, res) => {
-	console.log(req.body);
-	data = data.map((item) => (item.Id === req.body.Id ? { ...req.body } : item));
-	res.status(204).json({ status: 'ok' });
+	const found = data.filter((device) => device.id === req.body.Id);
+	if (found) {
+		data = data.map((item) =>
+			item.Id === req.body.Id ? { ...req.body } : item
+		);
+		res.status(204).json({ status: 'ok' });
+	} else {
+		res.status(400).json({ error: 'Could not modify provided item.' });
+	}
 });
 
 app.delete('/api/:deviceId', (req, res) => {
+	const startingLength = data.length;
 	data = data.filter((item) => item.Id !== req.params.deviceId);
-	res.status(200).json({ status: 'ok' });
+	if (data.length - 1 === startingLength) {
+		res.status(200).json({ id: req.params.deviceId });
+	} else {
+		res.status(400).json({ error: 'Could not delete provided item.' });
+	}
 });
 
 app.listen(PORT, () => {

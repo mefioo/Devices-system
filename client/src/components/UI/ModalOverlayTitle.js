@@ -9,4 +9,8 @@ const ModalOverlayTitle = (props) => {
 	);
 };
 
+ModalOverlayTitle.defaultProps = {
+	title: '',
+};
+
 export default ModalOverlayTitle;

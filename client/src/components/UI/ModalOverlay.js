@@ -9,4 +9,8 @@ const ModalOverlay = (props) => {
 	);
 };
 
+ModalOverlay.defaultProps = {
+	onHide: () => {},
+};
+
 export default ModalOverlay;

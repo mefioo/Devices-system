@@ -26,6 +26,7 @@ const FormGroupInput = (props) => {
 				type={props.type}
 				isInvalid={props.required && isTouched && value === ''}
 				value={props.value ? props.value : ''}
+				className={props.className}
 			></Form.Control>
 			<Form.Control.Feedback type='invalid'>
 				* This field is required.

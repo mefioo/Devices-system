@@ -9,8 +9,6 @@ const ListItem = (props) => {
 
 	const device = useSelector((state) => selectDeviceById(state, props.id));
 
-	// console.log('device');
-
 	const showModifyHandler = () => {
 		setIsModifing(true);
 	};
@@ -35,6 +33,10 @@ const ListItem = (props) => {
 			</ListGroupItem>
 		</React.Fragment>
 	);
+};
+
+ListItem.defaultProps = {
+	id: '',
 };
 
 export default ListItem;
