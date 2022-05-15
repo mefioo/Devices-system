@@ -89,9 +89,9 @@ app.put('/api/:deviceId', (req, res) => {
 });
 
 app.delete('/api/:deviceId', (req, res) => {
-	const startingLength = data.length;
-	data = data.filter((item) => item.Id !== req.params.deviceId);
-	if (data.length - 1 === startingLength) {
+	const found = data.filter((device) => device.id === req.params.deviceId);
+	if (found) {
+		data = data.filter((item) => item.Id !== req.params.deviceId);
 		res.status(200).json({ id: req.params.deviceId });
 	} else {
 		res.status(400).json({ error: 'Could not delete provided item.' });
