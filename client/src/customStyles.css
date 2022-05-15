@@ -8,10 +8,6 @@
 	padding-bottom: 0;
 }
 
-.outline-dark:hover {
-	color: red;
-}
-
 .list-group {
 	border-radius: 0;
 }
@@ -21,6 +17,16 @@
 	border: 1px solid black;
 	border-radius: 0;
 	margin: 10px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.list-group-item p {
+	align-self: flex-start;
+}
+
+.list-group-item:hover {
+	background-color: #f8f8f8;
 }
 
 .list-group-item + .list-group-item {
@@ -34,6 +40,10 @@
 
 .form-check {
 	margin: 0;
+}
+
+.form-check-input {
+	cursor: pointer;
 }
 
 form div {
